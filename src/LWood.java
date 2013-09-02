@@ -1,6 +1,3 @@
-//package edu; 
-
-
 import org.jbox2d.common.*;
 import org.jbox2d.dynamics.*;
 

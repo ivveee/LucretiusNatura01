@@ -6,8 +6,6 @@
 import java.util.ArrayList;
 import org.jbox2d.common.*;
 
-
-
 class LBody {
     luc parent; 
     LBody(luc in_parent){parent = in_parent;}

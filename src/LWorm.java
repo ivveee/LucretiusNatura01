@@ -1,5 +1,3 @@
-//package edu; 
-
 import org.jbox2d.common.*;
 import org.jbox2d.dynamics.joints.*;
 import org.jbox2d.collision.AABB;

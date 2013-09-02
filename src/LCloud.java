@@ -3,9 +3,6 @@ import org.jbox2d.common.*;
 import org.jbox2d.collision.shapes.*;
 import org.jbox2d.dynamics.*;
 
-
-
-
 class LCloud extends LBasicBody{
   //float stability = -1;
   //float MaxRotter = 0.5f;
