@@ -15,6 +15,7 @@ class LWormPart extends LBasicBody{
   
     LWormPart(int pX, int pY, luc in_parent) {
         super(in_parent);
+        stability = 0;
      MaxRotter = 5.f;
     rotter = MaxRotter;
     BodyDef bd = new BodyDef();
@@ -35,13 +36,14 @@ class LWormPart extends LBasicBody{
     fixtureDef.shape = cs;
     
     MassData md = new MassData();
-    md.mass = 1;
+    md.mass = 0.001f;
     md.center.setZero();
     PhBody.createFixture(fixtureDef);
     PhBody.setMassData(md);
     PhBody.setUserData(this);
   }
   
+  @Override
   Vec2 getPosition() {
     Fixture fd = PhBody.getFixtureList();
     Vec2 g = parent.box2d.coordWorldToPixels(PhBody.getPosition());
@@ -49,6 +51,7 @@ class LWormPart extends LBasicBody{
     return ret;
   }
   
+  @Override
     Vec2 getSize() {
     Fixture fd = PhBody.getFixtureList();
     CircleShape thisSahpe =  (CircleShape) fd.getShape(); 
@@ -58,6 +61,7 @@ class LWormPart extends LBasicBody{
   
   
   
+  @Override
     void Display(){
     parent.noStroke();
     parent.fill(parent.color(parent.defaultcolor));
@@ -71,16 +75,15 @@ class LWormPart extends LBasicBody{
 }
 
 
+  @Override
     void ApplyForce()
     {
-           PhBody.applyForceToCenter(new Vec2(0,-3));
-                 setForcesFromBodiesAffect();
-
+           //PhBody.applyForceToCenter(new Vec2(0,-3));
+             setForcesFromBodiesAffect();
 
       if (BackJoint == null) return;      
       float CurrentJointLength = BackJoint.getLength();
-      LWormPart wp = (LWormPart) BackJoint.getBodyB().getUserData();
-      
+      LWormPart wp = (LWormPart) BackJoint.getBodyB().getUserData(); 
       if(stable && !wp.stable){
         if(parent.box2d.scalarWorldToPixels(CurrentJointLength) >= getSize().x * 2)
           BackJoint.setLength(CurrentJointLength - 0.1f);
@@ -89,7 +92,7 @@ class LWormPart extends LBasicBody{
         }
       }
       if(!stable && wp.stable){
-         if(parent.box2d.scalarWorldToPixels(CurrentJointLength) <= getSize().x * 2.5)
+         if(parent.box2d.scalarWorldToPixels(CurrentJointLength) <= getSize().x * 2.7)
           BackJoint.setLength(CurrentJointLength + 0.1f);
         else {
           setStable();
@@ -98,6 +101,7 @@ class LWormPart extends LBasicBody{
     }
     
 
+      
     
     }
     
@@ -106,17 +110,21 @@ class LWormPart extends LBasicBody{
       //CircleShape thisSahpe =  (CircleShape) fd.getShape();
       PhBody.destroyFixture(fd);
           FixtureDef fixtureDef = new FixtureDef();
-    fixtureDef.density = 0.5f;
-    fixtureDef.friction = 10.f;
+    //fixtureDef.density = 0.5f;
+    fixtureDef.friction = 20.f;
     fixtureDef.filter.categoryBits = 0x0002;
     fixtureDef.filter.maskBits = 0x0006;
         CircleShape cs = new CircleShape();
     cs.m_radius = parent.box2d.scalarPixelsToWorld(parent.iPixDefaultHalfSize);
     fixtureDef.shape = cs;
       PhBody.createFixture(fixtureDef);
-      //PhBody.friction = 10f;
       stable = true;
-      if (BackJoint == null) Head.setUnStable();     
+      if (BackJoint == null) {Head.setUnStable();}
+          MassData md = new MassData();
+    md.mass = 0.4f;
+    md.center.setZero();
+        PhBody.setMassData(md);
+
     }
     
    void setUnStable(){
@@ -124,7 +132,7 @@ class LWormPart extends LBasicBody{
       //CircleShape thisSahpe =  (CircleShape) fd.getShape();
       PhBody.destroyFixture(fd);
           FixtureDef fixtureDef = new FixtureDef();
-    fixtureDef.density = 0.1f;
+    //fixtureDef.density = 0.1f;
     fixtureDef.friction = 0f;
     fixtureDef.filter.categoryBits = 0x0002;
     fixtureDef.filter.maskBits = 0x0006;
@@ -133,5 +141,11 @@ class LWormPart extends LBasicBody{
     fixtureDef.shape = cs;
       PhBody.createFixture(fixtureDef);
       stable = false;
+          MassData md = new MassData();
+    md.mass = 0.2f;
+    md.center.setZero();
+    PhBody.setMassData(md);
     }
+   
+
 }

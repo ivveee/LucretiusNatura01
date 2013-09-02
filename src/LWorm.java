@@ -5,8 +5,10 @@ import java.util.ArrayList;
 class LWorm extends LBody{
   
   int WormLength = 9;
-        float dF = 0;
+  float dF = 0;
   boolean Pull = true;
+  
+  Vec2 SumForce = new Vec2(0,0);
   
   ArrayList<LWormPart> Parts = new ArrayList<>();
   ArrayList<DistanceJoint> Joints = new ArrayList<>();
@@ -48,9 +50,9 @@ class LWorm extends LBody{
     for(int i =0;i< luc.floor(WormLength/2.f)+1;i++){
       LWormPart newPart = new LWormPart((int)FirstX, (int)(MinY + i*2*SizeY),parent);
       Parts.add(newPart);
+      //newPart.arBodiesAffect.add(this);
     }
     
-
       parent.All.addBodies(Parts);
       
     for(int i =0;i< (Parts.size() - 1);i++){
@@ -64,9 +66,9 @@ class LWorm extends LBody{
     djd.length = parent.box2d.scalarPixelsToWorld(SizeY*2);
     
     // These properties affect how springy the joint is 
-    djd.frequencyHz = 40;  // Try a value less than 5 (0 for no elasticity)
-    djd.dampingRatio = 2; // Ranges between 0 and 1
-    djd.collideConnected = false;
+    djd.frequencyHz = 50;  // Try a value less than 5 (0 for no elasticity)
+    djd.dampingRatio = 2f; // Ranges between 0 and 1
+    djd.collideConnected = true;
     
     DistanceJoint dj = (DistanceJoint) parent.box2d.world.createJoint(djd);
     Part1.BackJoint = dj;
@@ -99,9 +101,56 @@ class LWorm extends LBody{
           Joints.get(i).setLength(Joints.get(i).getLength()+ dF); 
         }   
     Parts.get(0).PhBody.applyForceToCenter(new Vec2(0,0.5));
-    */    
-
-    }
+    */ 
+        
+    Vec2 Head = new Vec2(Parts.get(0).getPosition().add(Parts.get(0).getSize().mul(0.5f)));
+    Vec2 FirstBody = new Vec2(Parts.get(1).getPosition().add(Parts.get(1).getSize().mul(0.5f)));
+    Vec2 Diff = Head.sub(FirstBody);
+    Vec2 normalize = new Vec2(Diff.x/Diff.length(),Diff.y/Diff.length());
+    //Vec2 Ahead = FirstBody.add(normalize.mul(parent.iPixDefaultHalfSize));
     
+    
+    
+    Vec2 size = normalize.mul(parent.iPixDefaultHalfSize);
+    Vec2 coord = Head;
+    Vec2 pointCoordAndSize = parent.box2d.coordPixelsToWorld(coord.add(size));
+    Vec2 pointCoord = parent.box2d.coordPixelsToWorld(coord);
+    Vec2 lowerBound = new Vec2(luc.min(pointCoordAndSize.x,pointCoord.x), luc.min(pointCoordAndSize.y,pointCoord.y));
+    Vec2 upperBound = new Vec2(luc.max(pointCoordAndSize.x,pointCoord.x), luc.max(pointCoordAndSize.y,pointCoord.y));    
+    lowerBound.subLocal(new Vec2(0.1f,0.0f));
+    upperBound.addLocal(new Vec2(0.1f,0.0f));
+    
+    AABB aabb = new AABB();
+    aabb.lowerBound.set(lowerBound);
+    aabb.upperBound.set(upperBound);
+    Query callback = new Query();
+    parent.box2d.world.queryAABB(callback, aabb);
+     //(callback.Grounds.size());
+     //assert(callback.Grounds.size()>4);
+    for(LGround oGround:callback.Grounds){
+        parent.All.removeBody(oGround);
+    }
+           
+        
+        
+  SumForce.set(0,0);
+  for(LWormPart oLWormPart: Parts){
+      oLWormPart.arBodiesAffect.clear();
+      oLWormPart.arBodiesAffect.addAll(arBodiesAffect);
+  }
+  }
+  //for (LBody oLForceBody: arBodiesAffect) {
+  //    Vec2 f = oLForceBody.GetForce(pos); 
+  //      SumForce.addLocal(f);
+  //    }
+  //  }
+    
+
+Vec2 GetForce(Vec2 input)
+{
+  return SumForce;
+}    
+
+
 }
 

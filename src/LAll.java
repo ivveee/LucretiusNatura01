@@ -76,7 +76,7 @@ void startIteration(){//Starts iteration
    return false;
  }
  
- boolean flush(){
+ boolean EndIteration(){
    if(activeIt != null)
      return false;
      arBody.addAll(arBodiesToAdd);

@@ -43,11 +43,12 @@ void ApplyForce(){
     
   for (LBody oLForceBody: arBodiesAffect) {
       Vec2 f = oLForceBody.GetForce(pos); 
-      stability -= (parent.sqrt(f.x*f.x + f.y*f.y));
+      stability -= (luc.sqrt(f.x*f.x + f.y*f.y));
       if (stability<0) {
         SumForce.addLocal(f);
       }
     }
+  SumForce.addLocal(LEarth.g.negate());//Cloud flys
    for (Iterator<LCloud> activeIt = Clouds.iterator();activeIt.hasNext();) {
      LCloud Cloud = activeIt.next();
      if (mass>300){
@@ -55,7 +56,6 @@ void ApplyForce(){
        if (i==1){ 
          Cloud.arBodiesAffect.remove(this);
          Cloud.arBodiesAffect.addAll(arBodiesAffect);
-         Cloud.arBodiesAffect.add(parent.oEarth);
          Cloud.PhBody.getFixtureList().getFilterData().categoryBits=0x0002;
          activeIt.remove();
        }
@@ -63,7 +63,10 @@ void ApplyForce(){
     }
 }
     
+//<editor-fold defaultstate="collapsed" desc="comment">
 
+@Override
+        //</editor-fold>
 Vec2 GetForce(Vec2 input)
 {
 

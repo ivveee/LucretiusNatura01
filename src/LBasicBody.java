@@ -16,6 +16,7 @@ class LBasicBody extends LBody{
   
   LGround Rot;
   
+  @Override
   void Display(){
     parent.noStroke();
     parent.fill(parent.color(parent.defaultcolor));
@@ -40,6 +41,7 @@ class LBasicBody extends LBody{
     PhBody.setMassData(md);
   }
   
+  @Override
   Vec2 getPosition() {
         Fixture fd = PhBody.getFixtureList();
     
@@ -95,6 +97,7 @@ class LBasicBody extends LBody{
   }
   
   
+  @Override
     void destroy() {
       parent.box2d.destroyBody(PhBody);
     }
