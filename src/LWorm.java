@@ -108,17 +108,19 @@ class LWorm extends LBody{
     Vec2 Diff = Head.sub(FirstBody);
     Vec2 normalize = new Vec2(Diff.x/Diff.length(),Diff.y/Diff.length());
     //Vec2 Ahead = FirstBody.add(normalize.mul(parent.iPixDefaultHalfSize));
-    
-    
-    
-    Vec2 size = normalize.mul(parent.iPixDefaultHalfSize);
+    float direction= 0.0f;
+    if(parent.random(0,300)>99 ) 
+        direction = parent.random(1,-3);
+       Vec2 normalizeNorm = new Vec2(direction*normalize.y,direction*normalize.x);
+    Vec2 size = normalize.add(normalizeNorm).mul(parent.iPixDefaultHalfSize);
     Vec2 coord = Head;
     Vec2 pointCoordAndSize = parent.box2d.coordPixelsToWorld(coord.add(size));
     Vec2 pointCoord = parent.box2d.coordPixelsToWorld(coord);
     Vec2 lowerBound = new Vec2(luc.min(pointCoordAndSize.x,pointCoord.x), luc.min(pointCoordAndSize.y,pointCoord.y));
     Vec2 upperBound = new Vec2(luc.max(pointCoordAndSize.x,pointCoord.x), luc.max(pointCoordAndSize.y,pointCoord.y));    
-    lowerBound.subLocal(new Vec2(0.1f,0.0f));
-    upperBound.addLocal(new Vec2(0.1f,0.0f));
+
+    lowerBound.subLocal(new Vec2(0.0f,0.0f));
+    upperBound.addLocal(new Vec2(0.0f,0.0f));
     
     AABB aabb = new AABB();
     aabb.lowerBound.set(lowerBound);
