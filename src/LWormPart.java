@@ -8,7 +8,7 @@ import org.jbox2d.dynamics.joints.*;
 
 
 class LWormPart extends LBasicBody{
-  
+ 
   DistanceJoint BackJoint;
   boolean stable = false;
   LWormPart Head;
@@ -86,14 +86,14 @@ class LWormPart extends LBasicBody{
       LWormPart wp = (LWormPart) BackJoint.getBodyB().getUserData(); 
       if(stable && !wp.stable){
         if(parent.box2d.scalarWorldToPixels(CurrentJointLength) >= getSize().x * 2)
-          BackJoint.setLength(CurrentJointLength - 0.1f);
+          BackJoint.setLength(CurrentJointLength - 0.15f);
         else {
           wp.setStable();
         }
       }
       if(!stable && wp.stable){
          if(parent.box2d.scalarWorldToPixels(CurrentJointLength) <= getSize().x * 2.7)
-          BackJoint.setLength(CurrentJointLength + 0.1f);
+          BackJoint.setLength(CurrentJointLength + 0.15f);
         else {
           setStable();
           wp.setUnStable();
@@ -107,33 +107,38 @@ class LWormPart extends LBasicBody{
     
     void setStable(){
       Fixture fd = PhBody.getFixtureList();
-      //CircleShape thisSahpe =  (CircleShape) fd.getShape();
+      CircleShape thisSahpe =  (CircleShape) fd.getShape();
       PhBody.destroyFixture(fd);
+      //fd.setFriction(10);
+    // fd.setDensity(0.5f);
           FixtureDef fixtureDef = new FixtureDef();
-    //fixtureDef.density = 0.5f;
-    fixtureDef.friction = 20.f;
+    fixtureDef.density = 0.5f;
+    fixtureDef.friction = 10.f;
+    fixtureDef.restitution = 0.2f;
     fixtureDef.filter.categoryBits = 0x0002;
     fixtureDef.filter.maskBits = 0x0006;
         CircleShape cs = new CircleShape();
     cs.m_radius = parent.box2d.scalarPixelsToWorld(parent.iPixDefaultHalfSize);
     fixtureDef.shape = cs;
       PhBody.createFixture(fixtureDef);
+     // PhBody.setAngularDamping(1);
       stable = true;
       if (BackJoint == null) {Head.setUnStable();}
           MassData md = new MassData();
     md.mass = 0.4f;
     md.center.setZero();
         PhBody.setMassData(md);
-
     }
     
    void setUnStable(){
        Fixture fd = PhBody.getFixtureList();
-      //CircleShape thisSahpe =  (CircleShape) fd.getShape();
-      PhBody.destroyFixture(fd);
+       //      fd.setFriction(0);
+     //fd.setDensity(0.1f);
+      CircleShape thisSahpe =  (CircleShape) fd.getShape();
+     PhBody.destroyFixture(fd);
           FixtureDef fixtureDef = new FixtureDef();
-    //fixtureDef.density = 0.1f;
-    fixtureDef.friction = 0f;
+    fixtureDef.density = 0.1f;
+    fixtureDef.friction = 0.f;
     fixtureDef.filter.categoryBits = 0x0002;
     fixtureDef.filter.maskBits = 0x0006;
         CircleShape cs = new CircleShape();
@@ -142,9 +147,10 @@ class LWormPart extends LBasicBody{
       PhBody.createFixture(fixtureDef);
       stable = false;
           MassData md = new MassData();
-    md.mass = 0.2f;
+    md.mass = 0.1f;
     md.center.setZero();
     PhBody.setMassData(md);
+
     }
    
 

@@ -32,7 +32,7 @@ public void setup()
 {
   box2d = new PBox2D(this);
   box2d.createWorld();
-  box2d.setGravity(0, 0);
+  box2d.setGravity(0, 0);//0);
   frameRate(iFrameRate);
   size(iScreenHeight, iScreenWidth); //228
   background(192, 64, 0);
