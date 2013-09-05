@@ -86,14 +86,14 @@ class LWormPart extends LBasicBody{
       LWormPart wp = (LWormPart) BackJoint.getBodyB().getUserData(); 
       if(stable && !wp.stable){
         if(parent.box2d.scalarWorldToPixels(CurrentJointLength) >= getSize().x * 2)
-          BackJoint.setLength(CurrentJointLength - 0.15f);
+          BackJoint.setLength(CurrentJointLength - 0.1f);
         else {
           wp.setStable();
         }
       }
       if(!stable && wp.stable){
          if(parent.box2d.scalarWorldToPixels(CurrentJointLength) <= getSize().x * 2.7)
-          BackJoint.setLength(CurrentJointLength + 0.15f);
+          BackJoint.setLength(CurrentJointLength + 0.1f);
         else {
           setStable();
           wp.setUnStable();
