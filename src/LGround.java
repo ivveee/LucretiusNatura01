@@ -5,6 +5,8 @@ import org.jbox2d.dynamics.*;
 import java.util.ArrayList;
 import org.jbox2d.collision.AABB;
 import org.jbox2d.callbacks.QueryCallback;
+import org.jbox2d.callbacks.RayCastCallback;
+
 
 class LGround extends LBasicBody {
   

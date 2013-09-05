@@ -3,7 +3,11 @@
  * and open the template in the editor.
  */
 //package edu; 
+import java.util.ArrayList;
+import org.jbox2d.callbacks.RayCastCallback;
 import org.jbox2d.common.*;
+import org.jbox2d.dynamics.Body;
+import org.jbox2d.dynamics.Fixture;
 
 /**
  *
@@ -22,18 +26,35 @@ class LDestructor extends LBody {
   Vec2 GetForce(Vec2 vecPoint){
     Vec2 dist = new Vec2(parent.iScreenWidth/2 - vecPoint.x,  parent.iScreenHeight/2 - vecPoint.y);
     Vec2 norm = new Vec2(parent.iScreenWidth/2 - vecPoint.y,  parent.iScreenHeight/2 - vecPoint.x);
-    Vec2 normalizeDist = dist.mul(1.0f/dist.length()*0.2f);
+    Vec2 normalizeDist = dist.mul(1.0f/dist.length());
     Vec2 normalizeNorm = norm.mul(-1.0f/norm.length());
     Vec2 diff = normalizeNorm.sub(normalizeDist) ;
-    Vec2 vecForce = new Vec2(diff.x*3,diff.y*3 );
+    float f = 200;
+    Vec2 vecForce = new Vec2(diff.x*f,diff.y*f );
     return vecForce;
   }
   
   Vec2 GetImpulse(Vec2 vecPoint){
     Vec2 dist = new Vec2(-parent.iScreenWidth/2 + vecPoint.x, - parent.iScreenHeight/2 + vecPoint.y);
     Vec2 normalize = dist.mul(1.0f/dist.length());
-    Vec2 vecImpulse = new Vec2(normalize.y*5,normalize.x*5);
+    float v = 50.f;
+    Vec2 vecImpulse = new Vec2(normalize.y*v,normalize.x*v);
     return vecImpulse;
   }
   
 }
+/*
+class RayCastAll implements RayCastCallback {
+
+  ArrayList <LGround> Grounds = new ArrayList <LGround>();
+
+  public float reportFixture(Fixture A,Vec2 Av,Vec2 B,float f ) {
+    Body b = A.getBody();
+    Object o = b.getUserData();
+    if (o == null)return true;
+    if (o.getClass() == LGround.class ) {
+      Grounds.add((LGround) o);
+    }
+    return true;
+  }
+}*/

@@ -108,12 +108,17 @@ class LWorm extends LBody{
     Vec2 Diff = Head.sub(FirstBody);
     Vec2 normalize = new Vec2(Diff.x/Diff.length(),Diff.y/Diff.length());
     //Vec2 Ahead = FirstBody.add(normalize.mul(parent.iPixDefaultHalfSize));
-    float direction= 0.0f;
-    if(parent.random(0,300)>99 ) 
-        direction = parent.random(1,-3);
-       Vec2 normalizeNorm = new Vec2(direction*normalize.y,direction*normalize.x);
-    Vec2 size = normalize.add(normalizeNorm).mul(parent.iPixDefaultHalfSize);
-    Vec2 coord = Head;
+    //float direction= 0.0f;
+    if(parent.random(0,300)>299 ) {
+        float direction = 0f;
+        if(parent.random(-1,1)>0) direction= 1.f; else direction= -1.f;
+        normalize = new Vec2(normalize.y*direction,normalize.x*direction);}
+    //direction = 1;
+       //Vec2 normalizeNorm = new Vec2(direction*normalize.y,direction*normalize.x);
+    Vec2 size = new Vec2(parent.iPixDefaultHalfSize,parent.iPixDefaultHalfSize);
+    Vec2 coord = Head.add(normalize.mul(parent.iPixDefaultHalfSize));
+    //parent.fill(parent.color(255,0,0));
+      //   parent.rect(coord.x, coord.y, size.x, size.y);
     Vec2 pointCoordAndSize = parent.box2d.coordPixelsToWorld(coord.add(size));
     Vec2 pointCoord = parent.box2d.coordPixelsToWorld(coord);
     Vec2 lowerBound = new Vec2(luc.min(pointCoordAndSize.x,pointCoord.x), luc.min(pointCoordAndSize.y,pointCoord.y));

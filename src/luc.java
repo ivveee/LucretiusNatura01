@@ -44,7 +44,7 @@ void construct(){
   All.addBody(oEarth); 
    // box2d.world.setContactListener(new LTouchings());
 
-  PImage  img = loadImage("krona.png");
+  PImage  img = loadImage("krona.png");//loadImage("tree_krona.png");
   LForm TreeLeaves = new LForm(img, color(0, 0, 0),this);
   for (int i=0;i<TreeLeaves.arBits.length;i++ ) {
     LLeaf Leaf = new LLeaf(TreeLeaves.arBits[i].x, TreeLeaves.arBits[i].y,this);
@@ -55,7 +55,7 @@ void construct(){
   }
   
   
-  PImage  imgWood = loadImage("stvol.png");
+  PImage  imgWood = loadImage("stvol.png");//_big.png");//loadImage("stvol.png");
   LForm TreeWood = new LForm(imgWood, color(0, 0, 0),this);
   for (int i=0;i<TreeWood.arBits.length;i++ ) {
     LWood Wood = new LWood(TreeWood.arBits[i].x, TreeWood.arBits[i].y,this);
@@ -83,6 +83,7 @@ void construct(){
     }
   } 
   //arBody.addAll(Clouds);
+  
   LCloudSet CloudSet = new LCloudSet(Clouds,this);
   All.addBody(CloudSet);
             CloudSet.arBodiesAffect.add(oWind2);
@@ -125,7 +126,7 @@ public void mouseClicked() {
         //oWorm.arBodiesAffect.add(oWind);
     oWorm.arBodiesAffect.add(oEarth);
 }
-
+int i=0;
 
 public void keyPressed() 
 {
@@ -136,6 +137,9 @@ public void keyPressed()
       
       LBasicBody BB = (LBasicBody)oBody;
       Vec2 pos = BB.getPosition();
+      float d=30.f;
+     if(!(pos.x+pos.y>600+i*d && pos.x+pos.y<600 +(i+1)*d)) continue;
+      //if(!(pos.x-pos.y>600 && pos.x-pos.y<650)) continue;
       Vec2 normalize = new Vec2(pos.x/pos.length(),pos.y/pos.length());
       
       Vec2 vecForce = new Vec2(random(-3,3),random(-3,3));
@@ -147,7 +151,7 @@ public void keyPressed()
     }
   }
     All.EndIteration();
-    
+    i+=2;
     
     /*
   for (LBody oBody: arBody) {   
