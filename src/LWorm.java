@@ -113,7 +113,7 @@ class LWorm extends LBody{
         float direction = 0f;
         if(parent.random(-1,1)>0) direction= 1.f; else direction= -1.f;
         normalize = new Vec2(normalize.y*direction,normalize.x*direction);}
-    if( normalize.y>0)normalize = new Vec2(normalize.x,-normalize.y);
+    if( normalize.y>0 )normalize = new Vec2(normalize.x,-normalize.y);
     //direction = 1;
        //Vec2 normalizeNorm = new Vec2(direction*normalize.y,direction*normalize.x);
     Vec2 size = new Vec2(parent.iPixDefaultHalfSize,parent.iPixDefaultHalfSize);
