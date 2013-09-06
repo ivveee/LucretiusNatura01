@@ -1,3 +1,4 @@
+import org.jbox2d.collision.shapes.MassData;
 import org.jbox2d.common.*;
 import org.jbox2d.dynamics.*;
 
@@ -18,6 +19,10 @@ LWood(int pX, int pY,luc in_body){
     fixtureDef.filter.maskBits = 0x0004;
     CreateBody(bd,fixtureDef,pX,pY);
     PhBody.setUserData(this);
+        MassData md = new MassData();
+    md.mass = 10f;
+    md.center.setZero();
+    PhBody.setMassData(md);
     if (stability>0)
             PhBody.setActive(false);
 }

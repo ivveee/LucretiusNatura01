@@ -121,10 +121,20 @@ public void mouseClicked() {
       oBody.arBodiesAffect.add(NewWind);
   }
   arBody.add(NewWind);*/
+    if(this.mouseButton == LEFT){
   LWorm oWorm = new LWorm(mouseX,mouseY,this);
     All.addBody(oWorm);
         //oWorm.arBodiesAffect.add(oWind);
-    oWorm.arBodiesAffect.add(oEarth);
+    oWorm.arBodiesAffect.add(oEarth);}
+    else{
+            LGround NewGround = new LGround(mouseX, mouseY,this);
+    //Wood.stability = 500000;
+    All.addBody(NewGround);
+    //Wood.arBodiesAffect.add(oWind);
+    //Wood.arBodiesAffect.add(oEarth);
+    }
+    
+    
 }
 int i=0;
 

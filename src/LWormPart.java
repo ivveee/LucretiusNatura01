@@ -80,12 +80,28 @@ class LWormPart extends LBasicBody{
     {
            //PhBody.applyForceToCenter(new Vec2(0,-3));
              setForcesFromBodiesAffect();
+      if (BackJoint == null) return;
 
-      if (BackJoint == null) return;      
+      //parent.text(f.length(),100,100);
       float CurrentJointLength = BackJoint.getLength();
       LWormPart wp = (LWormPart) BackJoint.getBodyB().getUserData(); 
+            
+      Vec2 f = new Vec2();
+      BackJoint.getReactionForce(parent.GTimeStep, f);
+      if (f.length()>2.f) {
+          parent.box2d.world.destroyJoint(BackJoint);
+          DistanceJoint current =  BackJoint;
+          LWormPart wpNext = wp;
+          while(current != null){
+              wpNext = (LWormPart) current.getBodyB().getUserData();      
+              current = wpNext.BackJoint;
+          }
+          Head = wpNext.Head;
+          wpNext.Head = wp;
+          return;}
+      
       if(stable && !wp.stable){
-        if(parent.box2d.scalarWorldToPixels(CurrentJointLength) >= getSize().x * 2)
+        if(parent.box2d.scalarWorldToPixels(CurrentJointLength) >= getSize().x * 2.3)
           BackJoint.setLength(CurrentJointLength - 0.1f);
         else {
           wp.setStable();
