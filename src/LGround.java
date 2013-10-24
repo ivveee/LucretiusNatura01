@@ -10,7 +10,7 @@ import org.jbox2d.callbacks.RayCastCallback;
 
 class LGround extends LBasicBody {
   
-  float finY = parent.iScreenHeight;
+  float finY = Luc.screenHeight;
   int rotterMass = 0;
   int rotterMassMax = 3;
   Vec2 pusher = new Vec2(0,-1);
@@ -26,31 +26,31 @@ class LGround extends LBasicBody {
     fixtureDef.friction = 1.0f;
     fixtureDef.filter.categoryBits = 0x0004;  // 0100 I am ground
     fixtureDef.filter.maskBits = 0x0002;  // 0010 I will collide with bodies
-    CreateBody(bd,fixtureDef,pX,pY);
+    createBody(bd,fixtureDef,pX,pY);
     PhBody.setUserData(this);
   }
 
-  void Display() {
-    parent.noStroke();
-    parent.fill(parent.color(parent.defaultcolor));
+  public void display() {
+    Luc.noStroke();
+    Luc.fill(Luc.color(Luc.defaultcolor));
     Vec2 vecPosition = getPosition();
     Vec2 vecSize = getSize();
-    parent.rect(vecPosition.x, vecPosition.y, vecSize.x, vecSize.y);
+    Luc.rect(vecPosition.x, vecPosition.y, vecSize.x, vecSize.y);
  }
   
-  void ApplyForce(){
+  void applyForce(){
     
     if(rotterMass >= rotterMassMax){
-          LGround NewGround = new LGround(getPosition().x, getPosition().y,parent);
-          parent.All.addBody(NewGround);
+          LGround NewGround = new LGround(getPosition().x, getPosition().y,Luc);
+          Luc.All.addBody(NewGround);
           rotterMass = 0;
      }
     Vec2 size = getSize();
     Vec2 coord = getPosition();
-    Vec2 pointCoordAndSize = parent.box2d.coordPixelsToWorld(coord.add(size));
-    Vec2 pointCoord = parent.box2d.coordPixelsToWorld(coord);
-    Vec2 lowerBound = new Vec2(parent.min(pointCoordAndSize.x,pointCoord.x), parent.min(pointCoordAndSize.y,pointCoord.y));
-    Vec2 upperBound = new Vec2(parent.max(pointCoordAndSize.x,pointCoord.x), parent.max(pointCoordAndSize.y,pointCoord.y));    
+    Vec2 pointCoordAndSize = Luc.box2d.coordPixelsToWorld(coord.add(size));
+    Vec2 pointCoord = Luc.box2d.coordPixelsToWorld(coord);
+    Vec2 lowerBound = new Vec2(Luc.min(pointCoordAndSize.x,pointCoord.x), Luc.min(pointCoordAndSize.y,pointCoord.y));
+    Vec2 upperBound = new Vec2(Luc.max(pointCoordAndSize.x,pointCoord.x), Luc.max(pointCoordAndSize.y,pointCoord.y));    
     lowerBound.addLocal(new Vec2(0.2f,0.2f));
     upperBound.subLocal(new Vec2(0.2f,0.2f));
     
@@ -59,10 +59,10 @@ class LGround extends LBasicBody {
     aabb.lowerBound.set(lowerBound);
     aabb.upperBound.set(upperBound);
     Query callback = new Query();
-    parent.box2d.world.queryAABB(callback, aabb);
+    Luc.box2d.world.queryAABB(callback, aabb);
     Vec2 SumVelocity = new Vec2();
     for (LBody oLForceBody: arBodiesAffect) {
-      Vec2 f = oLForceBody.GetImpulse(getPosition()); 
+      Vec2 f = oLForceBody.getImpulse(getPosition()); 
       SumVelocity.addLocal(f);
     }
     
@@ -81,7 +81,7 @@ class LGround extends LBasicBody {
 
 
   void setPosition(Vec2 NewPos) {
-    Vec2 InWorld = parent.box2d.coordPixelsToWorld(NewPos.x + getSize().x/2, NewPos.y + getSize().y/2);
+    Vec2 InWorld = Luc.box2d.coordPixelsToWorld(NewPos.x + getSize().x/2, NewPos.y + getSize().y/2);
     PhBody.setTransform(InWorld, 0.f);
   }
 }

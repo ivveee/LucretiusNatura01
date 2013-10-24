@@ -8,11 +8,9 @@ import org.jbox2d.dynamics.joints.*;
 
 
 class LWormPart extends LBasicBody{
- 
   DistanceJoint BackJoint;
   boolean stable = false;
   LWormPart Head;
-  
     LWormPart(int pX, int pY, luc in_parent) {
         super(in_parent);
         stability = 0;
@@ -28,11 +26,11 @@ class LWormPart extends LBasicBody{
     fixtureDef.filter.maskBits = 0x0006;
 
     bd.fixedRotation = true;
-    bd.position.set(parent.box2d.coordPixelsToWorld(pX+parent.iPixDefaultHalfSize,pY+parent.iPixDefaultHalfSize));
-    PhBody = parent.box2d.createBody(bd);
+    bd.position.set(Luc.box2d.coordPixelsToWorld(pX+Luc.pixHalfSize,pY+Luc.pixHalfSize));
+    PhBody = Luc.box2d.createBody(bd);
     
     CircleShape cs = new CircleShape();
-    cs.m_radius = parent.box2d.scalarPixelsToWorld(parent.iPixDefaultHalfSize);
+    cs.m_radius = Luc.box2d.scalarPixelsToWorld(Luc.pixHalfSize);
     fixtureDef.shape = cs;
     
     MassData md = new MassData();
@@ -46,7 +44,7 @@ class LWormPart extends LBasicBody{
   @Override
   Vec2 getPosition() {
     Fixture fd = PhBody.getFixtureList();
-    Vec2 g = parent.box2d.coordWorldToPixels(PhBody.getPosition());
+    Vec2 g = Luc.box2d.coordWorldToPixels(PhBody.getPosition());
     Vec2 ret = g.sub(getSize());
     return ret;
   }
@@ -55,28 +53,28 @@ class LWormPart extends LBasicBody{
     Vec2 getSize() {
     Fixture fd = PhBody.getFixtureList();
     CircleShape thisSahpe =  (CircleShape) fd.getShape(); 
-    float r = parent.box2d.scalarWorldToPixels(thisSahpe.getRadius());
+    float r = Luc.box2d.scalarWorldToPixels(thisSahpe.getRadius());
     return new Vec2(r, r);
   }
   
   
   
   @Override
-    void Display(){
-    parent.noStroke();
-    parent.fill(parent.color(parent.defaultcolor));
+  public void display(){
+    Luc.noStroke();
+    Luc.fill(Luc.color(Luc.defaultcolor));
     Vec2 vecPosition = getPosition();
     Vec2 vecSize = getSize();
     //ellipse(vecPosition.x,vecPosition.y,vecSize.x*2,vecSize.y*2);
     //if(stable)
-      parent.rect(vecPosition.x,vecPosition.y,parent.iPixDefaultSize,parent.iPixDefaultSize);
+      Luc.rect(vecPosition.x,vecPosition.y,Luc.pixSize,Luc.pixSize);
     //else
     //  rect(vecPosition.x-1,vecPosition.y-2,iPixDefaultSize,iPixDefaultSize);
 }
 
 
-  @Override
-    void ApplyForce()
+ // @Override
+    void applyForce()
     {
            //PhBody.applyForceToCenter(new Vec2(0,-3));
              setForcesFromBodiesAffect();
@@ -87,9 +85,9 @@ class LWormPart extends LBasicBody{
       LWormPart wp = (LWormPart) BackJoint.getBodyB().getUserData(); 
             
       Vec2 f = new Vec2();
-      BackJoint.getReactionForce(parent.GTimeStep, f);
+      BackJoint.getReactionForce(Luc.GTimeStep, f);
       if (f.length()>2.f) {
-          parent.box2d.world.destroyJoint(BackJoint);
+          Luc.box2d.world.destroyJoint(BackJoint);
           DistanceJoint current =  BackJoint;
           LWormPart wpNext = wp;
           while(current != null){
@@ -101,14 +99,14 @@ class LWormPart extends LBasicBody{
           return;}
       
       if(stable && !wp.stable){
-        if(parent.box2d.scalarWorldToPixels(CurrentJointLength) >= getSize().x * 2.3)
+        if(Luc.box2d.scalarWorldToPixels(CurrentJointLength) >= getSize().x * 2.3)
           BackJoint.setLength(CurrentJointLength - 0.1f);
         else {
           wp.setStable();
         }
       }
       if(!stable && wp.stable){
-         if(parent.box2d.scalarWorldToPixels(CurrentJointLength) <= getSize().x * 2.7)
+         if(Luc.box2d.scalarWorldToPixels(CurrentJointLength) <= getSize().x * 2.9)
           BackJoint.setLength(CurrentJointLength + 0.1f);
         else {
           setStable();
@@ -134,7 +132,7 @@ class LWormPart extends LBasicBody{
     fixtureDef.filter.categoryBits = 0x0002;
     fixtureDef.filter.maskBits = 0x0006;
         CircleShape cs = new CircleShape();
-    cs.m_radius = parent.box2d.scalarPixelsToWorld(parent.iPixDefaultHalfSize);
+    cs.m_radius = Luc.box2d.scalarPixelsToWorld(Luc.pixHalfSize);
     fixtureDef.shape = cs;
       PhBody.createFixture(fixtureDef);
      // PhBody.setAngularDamping(1);
@@ -158,7 +156,7 @@ class LWormPart extends LBasicBody{
     fixtureDef.filter.categoryBits = 0x0002;
     fixtureDef.filter.maskBits = 0x0006;
         CircleShape cs = new CircleShape();
-    cs.m_radius = parent.box2d.scalarPixelsToWorld(parent.iPixDefaultHalfSize);
+    cs.m_radius = Luc.box2d.scalarPixelsToWorld(Luc.pixHalfSize);
     fixtureDef.shape = cs;
       PhBody.createFixture(fixtureDef);
       stable = false;

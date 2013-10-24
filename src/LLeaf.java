@@ -21,7 +21,7 @@ class LLeaf extends LBasicBody {
     fixtureDef.friction = 0.8f;
     fixtureDef.filter.categoryBits = 0x0002;
     fixtureDef.filter.maskBits = 0x0004;
-    CreateBody(bd,fixtureDef,pX,pY);
+    createBody(bd,fixtureDef,pX,pY);
     PhBody.setUserData(this);
     if (stability>0)
             PhBody.setActive(false);
@@ -29,18 +29,18 @@ class LLeaf extends LBasicBody {
 
 
 
-  void ApplyForce() {
+  void applyForce() {
     //Wind.GetForce();
     setForcesFromBodiesAffect();
     setRotter();
   }
 
-void Display(){
-    parent.noStroke();
-    parent.fill(parent.color(parent.defaultcolor));
+public void display(){
+    Luc.noStroke();
+    Luc.fill(Luc.color(Luc.defaultcolor));
     Vec2 vecPosition = getPosition();
     Vec2 vecSize = getSize();
-    parent.rect(vecPosition.x ,vecPosition.y+vecSize.y*(1-rotter/MaxRotter),vecSize.x,vecSize.y);
+    Luc.rect(vecPosition.x ,vecPosition.y+vecSize.y*(1-rotter/MaxRotter),vecSize.x,vecSize.y);
 }
 
 }

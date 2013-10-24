@@ -16,10 +16,10 @@ class LWorm extends LBody{
   LWorm(float X, float Y,luc in_parent){
     super(in_parent);
     
-    Vec2 size = new Vec2(1,WormLength * parent.iPixDefaultSize - parent.iPixDefaultHalfSize);
+    Vec2 size = new Vec2(1,WormLength * Luc.pixSize - Luc.pixHalfSize);
     Vec2 coord = new Vec2(X,Y);
-    Vec2 pointCoordAndSize = parent.box2d.coordPixelsToWorld(coord.add(size));
-    Vec2 pointCoord = parent.box2d.coordPixelsToWorld(coord);
+    Vec2 pointCoordAndSize = Luc.box2d.coordPixelsToWorld(coord.add(size));
+    Vec2 pointCoord = Luc.box2d.coordPixelsToWorld(coord);
     Vec2 lowerBound = new Vec2(luc.min(pointCoordAndSize.x,pointCoord.x), luc.min(pointCoordAndSize.y,pointCoord.y));
     Vec2 upperBound = new Vec2(luc.max(pointCoordAndSize.x,pointCoord.x), luc.max(pointCoordAndSize.y,pointCoord.y));    
     lowerBound.addLocal(new Vec2(0.2f,0.2f));
@@ -29,10 +29,10 @@ class LWorm extends LBody{
     aabb.lowerBound.set(lowerBound);
     aabb.upperBound.set(upperBound);
     Query callback = new Query();
-    parent.box2d.world.queryAABB(callback, aabb);
+    Luc.box2d.world.queryAABB(callback, aabb);
      //println(callback.Grounds.size());
      assert(callback.Grounds.size()>4);
-     float MinY = parent.iScreenHeight; float FirstX = 0; float SizeY = 0;
+     float MinY = Luc.screenHeight; float FirstX = 0; float SizeY = 0;
     for (int i=0;i<callback.Grounds.size();i++){
       LGround PushedGround = callback.Grounds.get(i);
       if(PushedGround.getPosition().y < MinY){
@@ -48,12 +48,12 @@ class LWorm extends LBody{
     float SizeY = iPixDefaultSize;
     */
     for(int i =0;i< luc.floor(WormLength/2.f)+1;i++){
-      LWormPart newPart = new LWormPart((int)FirstX, (int)(MinY + i*2*SizeY),parent);
+      LWormPart newPart = new LWormPart((int)FirstX, (int)(MinY + i*2*SizeY),Luc);
       Parts.add(newPart);
       //newPart.arBodiesAffect.add(this);
     }
     
-      parent.All.addBodies(Parts);
+      Luc.All.addBodies(Parts);
       
     for(int i =0;i< (Parts.size() - 1);i++){
       LWormPart Part1 = Parts.get(i);
@@ -63,14 +63,14 @@ class LWorm extends LBody{
     djd.bodyA = Part1.PhBody;
     djd.bodyB = Part2.PhBody;
     // Equilibrium length
-    djd.length = parent.box2d.scalarPixelsToWorld(SizeY*2);
+    djd.length = Luc.box2d.scalarPixelsToWorld(SizeY*2);
     
     // These properties affect how springy the joint is 
     djd.frequencyHz = 50;  // Try a value less than 5 (0 for no elasticity)
     djd.dampingRatio = 2f; // Ranges between 0 and 1
     djd.collideConnected = true;
     
-    DistanceJoint dj = (DistanceJoint) parent.box2d.world.createJoint(djd);
+    DistanceJoint dj = (DistanceJoint) Luc.box2d.world.createJoint(djd);
     Part1.BackJoint = dj;
     Joints.add(dj);
     }
@@ -86,6 +86,10 @@ class LWorm extends LBody{
     
   }
   
+  void act(){
+    ApplyForce();
+    //display();
+}
   
     void ApplyForce(){
 /*
@@ -109,19 +113,19 @@ class LWorm extends LBody{
     Vec2 normalize = new Vec2(Diff.x/Diff.length(),Diff.y/Diff.length());
     //Vec2 Ahead = FirstBody.add(normalize.mul(parent.iPixDefaultHalfSize));
     //float direction= 0.0f;
-    if(parent.random(0,300)>299 ) {
+    if(Luc.random(0,300)>299 ) {
         float direction = 0f;
-        if(parent.random(-1,1)>0) direction= 1.f; else direction= -1.f;
+        if(Luc.random(-1,1)>0) direction= 1.f; else direction= -1.f;
         normalize = new Vec2(normalize.y*direction,normalize.x*direction);}
-    if( normalize.y>0 && parent.random(0,300)<290)normalize = new Vec2(normalize.x,-normalize.y);
+    if( normalize.y>0 && Luc.random(0,300)<290)normalize = new Vec2(normalize.x,-normalize.y);
     //direction = 1;
        //Vec2 normalizeNorm = new Vec2(direction*normalize.y,direction*normalize.x);
-    Vec2 size = new Vec2(parent.iPixDefaultHalfSize,parent.iPixDefaultHalfSize);
-    Vec2 coord = Head.add(normalize.mul(parent.iPixDefaultHalfSize));
-    parent.fill(parent.color(255,0,0));
-        parent.rect(coord.x, coord.y, size.x, size.y);
-    Vec2 pointCoordAndSize = parent.box2d.coordPixelsToWorld(coord.add(size));
-    Vec2 pointCoord = parent.box2d.coordPixelsToWorld(coord);
+    Vec2 size = new Vec2(Luc.pixHalfSize,Luc.pixHalfSize);
+    Vec2 coord = Head.add(normalize.mul(Luc.pixHalfSize));
+    Luc.fill(Luc.color(255,0,0));
+        Luc.rect(coord.x, coord.y, size.x, size.y);
+    Vec2 pointCoordAndSize = Luc.box2d.coordPixelsToWorld(coord.add(size));
+    Vec2 pointCoord = Luc.box2d.coordPixelsToWorld(coord);
     Vec2 lowerBound = new Vec2(luc.min(pointCoordAndSize.x,pointCoord.x), luc.min(pointCoordAndSize.y,pointCoord.y));
     Vec2 upperBound = new Vec2(luc.max(pointCoordAndSize.x,pointCoord.x), luc.max(pointCoordAndSize.y,pointCoord.y));    
 
@@ -132,11 +136,11 @@ class LWorm extends LBody{
     aabb.lowerBound.set(lowerBound);
     aabb.upperBound.set(upperBound);
     Query callback = new Query();
-    parent.box2d.world.queryAABB(callback, aabb);
+    Luc.box2d.world.queryAABB(callback, aabb);
      //(callback.Grounds.size());
      //assert(callback.Grounds.size()>4);
     for(LGround oGround:callback.Grounds){
-        parent.All.removeBody(oGround);
+        Luc.All.removeBody(oGround);
     }
            
         
@@ -154,7 +158,7 @@ class LWorm extends LBody{
   //  }
     
 
-Vec2 GetForce(Vec2 input)
+Vec2 getForce(Vec2 input)
 {
   return SumForce;
 }    

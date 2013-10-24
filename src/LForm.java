@@ -45,8 +45,8 @@ class LForm{
         k++;
       }
       if (imgEye.pixels[i] == col) {
-        LBit Pixel=new LBit(j*(parent.iPixDefaultSize),
-                            k*(parent.iPixDefaultSize),
+        LBit Pixel=new LBit(j*(parent.pixSize),
+                            k*(parent.pixSize),
                             0);
         LBit[] NewarBits= (LBit[])luc.append(arBits, Pixel);
         arBits = NewarBits;

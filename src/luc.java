@@ -11,20 +11,18 @@ public class luc extends PApplet{
   PBox2D box2d;
 
 
-int iScreenHeight =800;
-int iScreenWidth = 600;
-int iFrameRate = 40;
-int iPixDefaultSize = 8;
-int iPixDefaultHalfSize = round(iPixDefaultSize/2.f);
+int screenHeight =800;
+int screenWidth = 600;
+int currentFrameRate = 40;
+int pixSize = 8;
+int pixHalfSize = round(pixSize/2.f);
 LWind oWind = new LWind(20.0f, PI/2, 0, 200, 600, 500,this);
 LWind oWind2 = new LWind(2.0f, -PI/2, 200, 0, 600, 250,this);
-
 LEarth oEarth = new LEarth(this);
 float GTime = 0;
-float GTimeStep = (float)1./(float)iFrameRate;
+float GTimeStep = (float)1./(float)currentFrameRate;
 
 int defaultcolor = color(56,75,90);
-ArrayList<LBody> arBody = new ArrayList<>();
 
 LAll All = new LAll();
 
@@ -33,8 +31,8 @@ public void setup()
   box2d = new PBox2D(this);
   box2d.createWorld();
   box2d.setGravity(0, 0);//0);
-  frameRate(iFrameRate);
-  size(iScreenHeight, iScreenWidth); //228
+  frameRate(currentFrameRate);
+  size(screenHeight, screenWidth); //228
   background(192, 64, 0);
   construct();
 }
@@ -53,8 +51,6 @@ void construct(){
     Leaf.arBodiesAffect.add(oWind);
     Leaf.arBodiesAffect.add(oEarth);
   }
-  
-  
   PImage  imgWood = loadImage("stvol.png");//_big.png");//loadImage("stvol.png");
   LForm TreeWood = new LForm(imgWood, color(0, 0, 0),this);
   for (int i=0;i<TreeWood.arBits.length;i++ ) {
@@ -101,8 +97,9 @@ public void draw() {
  All.startIteration();
   while(All.hasNext()){
     LBody Body = All.getNext();
-    Body.Display();
-    Body.ApplyForce();
+    Body.act();
+    //Body.display();
+    //Body.ApplyForce();
   }
     All.EndIteration();
 //println(activeIt);  

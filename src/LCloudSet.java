@@ -10,6 +10,11 @@ Vec2 SumForce = new Vec2(0,0);
 float stability = 1;
 float mass;
 
+void act(){
+    ApplyForce();
+    //display();
+}
+
 LCloudSet(ArrayList <LCloud> in_Clouds,luc in_parent){
     super(in_parent);
   mass = 200;//in_Clouds.length();
@@ -23,7 +28,7 @@ LCloudSet(ArrayList <LCloud> in_Clouds,luc in_parent){
 }
 
 
-void Display(){
+void display(){
   for (Iterator<LCloud> activeIt = Clouds.iterator();activeIt.hasNext();) {
      LCloud Cloud = activeIt.next();
      //Cloud.Display();
@@ -42,7 +47,7 @@ void ApplyForce(){
     pos.mulLocal(1.0f/((float)Clouds.size()));
     
   for (LBody oLForceBody: arBodiesAffect) {
-      Vec2 f = oLForceBody.GetForce(pos); 
+      Vec2 f = oLForceBody.getForce(pos); 
       stability -= (luc.sqrt(f.x*f.x + f.y*f.y));
       if (stability<0) {
         SumForce.addLocal(f);
@@ -52,7 +57,7 @@ void ApplyForce(){
    for (Iterator<LCloud> activeIt = Clouds.iterator();activeIt.hasNext();) {
      LCloud Cloud = activeIt.next();
      if (mass>300){
-       int i = (int) parent.random(1,Clouds.size());
+       int i = (int) Luc.random(1,Clouds.size());
        if (i==1){ 
          Cloud.arBodiesAffect.remove(this);
          Cloud.arBodiesAffect.addAll(arBodiesAffect);
@@ -62,12 +67,8 @@ void ApplyForce(){
      }
     }
 }
-    
-//<editor-fold defaultstate="collapsed" desc="comment">
 
-@Override
-        //</editor-fold>
-Vec2 GetForce(Vec2 input)
+Vec2 getForce(Vec2 input)
 {
 
   return SumForce;
