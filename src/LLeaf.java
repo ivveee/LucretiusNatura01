@@ -11,8 +11,8 @@ class LLeaf extends LBasicBody {
 
   LLeaf(int pX, int pY,luc in_parent) {
            super(in_parent);
-     MaxRotter = 5.f;
-     rotter = MaxRotter;
+     maxRotter = 5.f;
+     rotter = maxRotter;
     BodyDef bd = new BodyDef();
     bd.type = BodyType.DYNAMIC;
     //bd.linearDamping = 0.1f;
@@ -22,9 +22,9 @@ class LLeaf extends LBasicBody {
     fixtureDef.filter.categoryBits = 0x0002;
     fixtureDef.filter.maskBits = 0x0004;
     createBody(bd,fixtureDef,pX,pY);
-    PhBody.setUserData(this);
+    myBody.setUserData(this);
     if (stability>0)
-            PhBody.setActive(false);
+            myBody.setActive(false);
   }
 
 
@@ -40,7 +40,7 @@ public void display(){
     Luc.fill(Luc.color(Luc.defaultcolor));
     Vec2 vecPosition = getPosition();
     Vec2 vecSize = getSize();
-    Luc.rect(vecPosition.x ,vecPosition.y+vecSize.y*(1-rotter/MaxRotter),vecSize.x,vecSize.y);
+    Luc.rect(vecPosition.x ,vecPosition.y+vecSize.y*(1-rotter/maxRotter),vecSize.x,vecSize.y);
 }
 
 }

@@ -14,8 +14,8 @@ class LWormPart extends LBasicBody{
     LWormPart(int pX, int pY, luc in_parent) {
         super(in_parent);
         stability = 0;
-     MaxRotter = 5.f;
-    rotter = MaxRotter;
+     maxRotter = 5.f;
+    rotter = maxRotter;
     BodyDef bd = new BodyDef();
     bd.type = BodyType.DYNAMIC;
     //bd.linearDamping = 0.1f;
@@ -27,7 +27,7 @@ class LWormPart extends LBasicBody{
 
     bd.fixedRotation = true;
     bd.position.set(Luc.box2d.coordPixelsToWorld(pX+Luc.pixHalfSize,pY+Luc.pixHalfSize));
-    PhBody = Luc.box2d.createBody(bd);
+    myBody = Luc.box2d.createBody(bd);
     
     CircleShape cs = new CircleShape();
     cs.m_radius = Luc.box2d.scalarPixelsToWorld(Luc.pixHalfSize);
@@ -36,22 +36,22 @@ class LWormPart extends LBasicBody{
     MassData md = new MassData();
     md.mass = 0.001f;
     md.center.setZero();
-    PhBody.createFixture(fixtureDef);
-    PhBody.setMassData(md);
-    PhBody.setUserData(this);
+    myBody.createFixture(fixtureDef);
+    myBody.setMassData(md);
+    myBody.setUserData(this);
   }
   
   @Override
   Vec2 getPosition() {
-    Fixture fd = PhBody.getFixtureList();
-    Vec2 g = Luc.box2d.coordWorldToPixels(PhBody.getPosition());
+    Fixture fd = myBody.getFixtureList();
+    Vec2 g = Luc.box2d.coordWorldToPixels(myBody.getPosition());
     Vec2 ret = g.sub(getSize());
     return ret;
   }
   
   @Override
     Vec2 getSize() {
-    Fixture fd = PhBody.getFixtureList();
+    Fixture fd = myBody.getFixtureList();
     CircleShape thisSahpe =  (CircleShape) fd.getShape(); 
     float r = Luc.box2d.scalarWorldToPixels(thisSahpe.getRadius());
     return new Vec2(r, r);
@@ -120,9 +120,9 @@ class LWormPart extends LBasicBody{
     }
     
     void setStable(){
-      Fixture fd = PhBody.getFixtureList();
+      Fixture fd = myBody.getFixtureList();
       CircleShape thisSahpe =  (CircleShape) fd.getShape();
-      PhBody.destroyFixture(fd);
+      myBody.destroyFixture(fd);
       //fd.setFriction(10);
     // fd.setDensity(0.5f);
           FixtureDef fixtureDef = new FixtureDef();
@@ -134,22 +134,22 @@ class LWormPart extends LBasicBody{
         CircleShape cs = new CircleShape();
     cs.m_radius = Luc.box2d.scalarPixelsToWorld(Luc.pixHalfSize);
     fixtureDef.shape = cs;
-      PhBody.createFixture(fixtureDef);
+      myBody.createFixture(fixtureDef);
      // PhBody.setAngularDamping(1);
       stable = true;
       if (BackJoint == null) {Head.setUnStable();}
           MassData md = new MassData();
     md.mass = 0.4f;
     md.center.setZero();
-        PhBody.setMassData(md);
+        myBody.setMassData(md);
     }
     
    void setUnStable(){
-       Fixture fd = PhBody.getFixtureList();
+       Fixture fd = myBody.getFixtureList();
        //      fd.setFriction(0);
      //fd.setDensity(0.1f);
       CircleShape thisSahpe =  (CircleShape) fd.getShape();
-     PhBody.destroyFixture(fd);
+     myBody.destroyFixture(fd);
           FixtureDef fixtureDef = new FixtureDef();
     fixtureDef.density = 0.1f;
     fixtureDef.friction = 0.f;
@@ -158,12 +158,12 @@ class LWormPart extends LBasicBody{
         CircleShape cs = new CircleShape();
     cs.m_radius = Luc.box2d.scalarPixelsToWorld(Luc.pixHalfSize);
     fixtureDef.shape = cs;
-      PhBody.createFixture(fixtureDef);
+      myBody.createFixture(fixtureDef);
       stable = false;
           MassData md = new MassData();
     md.mass = 0.1f;
     md.center.setZero();
-    PhBody.setMassData(md);
+    myBody.setMassData(md);
 
     }
    

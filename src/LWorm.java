@@ -60,8 +60,8 @@ class LWorm extends LBody{
       LWormPart Part2 = Parts.get(i+1);
     DistanceJointDef djd = new DistanceJointDef();
     // Connection between previous particle and this one
-    djd.bodyA = Part1.PhBody;
-    djd.bodyB = Part2.PhBody;
+    djd.bodyA = Part1.myBody;
+    djd.bodyB = Part2.myBody;
     // Equilibrium length
     djd.length = Luc.box2d.scalarPixelsToWorld(SizeY*2);
     

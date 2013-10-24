@@ -21,7 +21,7 @@ LCloudSet(ArrayList <LCloud> in_Clouds,luc in_parent){
   Clouds = in_Clouds;
   for (Iterator<LCloud> activeIt = Clouds.iterator();activeIt.hasNext();) {
      LCloud Cloud = activeIt.next();
-     Cloud.PhBody.getFixtureList().getFilterData().categoryBits=0x0010;
+     Cloud.myBody.getFixtureList().getFilterData().categoryBits=0x0010;
      Cloud.arBodiesAffect.clear();
      Cloud.arBodiesAffect.add(this);
    }
@@ -61,7 +61,7 @@ void ApplyForce(){
        if (i==1){ 
          Cloud.arBodiesAffect.remove(this);
          Cloud.arBodiesAffect.addAll(arBodiesAffect);
-         Cloud.PhBody.getFixtureList().getFilterData().categoryBits=0x0002;
+         Cloud.myBody.getFixtureList().getFilterData().categoryBits=0x0002;
          activeIt.remove();
        }
      }

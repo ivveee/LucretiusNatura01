@@ -1,29 +1,13 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 //package edu; 
 import java.util.ArrayList;
 import org.jbox2d.common.*;
 
-
-interface IA{ void doA();}
-interface IB extends IA{void doB();}
-
-class cC implements IA{
-   public void doA(){System.out.println("i am C");}
-   //public void doA(){;}
-}
-
-class cD extends cC implements IB{ 
-public void doB(){System.out.println("i am D");}
-public void doA(){System.out.println("i am D");}
-}
-
 interface IVisible{
     void display();
 }
-
+//Кроме того всё то, что само по себе существует, 
+//Действует или само, иль подвержено действию будет, 
+//Иль будет тем, где вещам находиться и двигаться можно. 
 interface IIsPhysical{
     Vec2 getPosition();
     Vec2 getSize();

@@ -27,7 +27,7 @@ class LGround extends LBasicBody {
     fixtureDef.filter.categoryBits = 0x0004;  // 0100 I am ground
     fixtureDef.filter.maskBits = 0x0002;  // 0010 I will collide with bodies
     createBody(bd,fixtureDef,pX,pY);
-    PhBody.setUserData(this);
+    myBody.setUserData(this);
   }
 
   public void display() {
@@ -70,19 +70,19 @@ class LGround extends LBasicBody {
     for (int i=0;i<callback.Grounds.size();i++) {
       LGround PushingGround = callback.Grounds.get(i);
       if (PushingGround!=this && PushingGround.getPosition().y <= getPosition().y 
-                                                          && PushingGround.PhBody.getLinearVelocity().y == 0){
+                                                          && PushingGround.myBody.getLinearVelocity().y == 0){
         currentPusher = pusher;
         break;
       }
     }
     SumVelocity.addLocal(currentPusher);
-    PhBody.setLinearVelocity(SumVelocity);
+    myBody.setLinearVelocity(SumVelocity);
   }
 
 
   void setPosition(Vec2 NewPos) {
     Vec2 InWorld = Luc.box2d.coordPixelsToWorld(NewPos.x + getSize().x/2, NewPos.y + getSize().y/2);
-    PhBody.setTransform(InWorld, 0.f);
+    myBody.setTransform(InWorld, 0.f);
   }
 }
 
